@@ -1,0 +1,108 @@
+{
+	"info": {
+		"name": "EjercicioReactRedux",
+		"_postman_id": "e528a9b2-9a33-5a6a-3bb5-b27affbad30e",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Todos los Libros",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/libros",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"libros"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Libro",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"titulo\": \"titulotest\",\n\t\"autor\": \"autortest\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/libros",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"libros"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Modificar Libro",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"titulo\": \"titulotestmodificado\",\n\t\"autor\": \"autortestmodificado\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/libros/10",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"libros",
+						"10"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar Libro",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/libros/10",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"libros",
+						"10"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
