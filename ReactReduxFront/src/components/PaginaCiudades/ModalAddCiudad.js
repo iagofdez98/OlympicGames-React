@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Button, FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { addCiudad } from '../../actions';
+import * as fromState from '../../reducers';
 
 /**
  * Aqui se trata de manera breve el comportamiento de los inputs en React. 
@@ -84,8 +85,7 @@ class ModalAddCiudad extends Component {
   }
 
   handleSubmit() {
-    if (this.getValidationStatePais() === 'success' && this.getValidationStateNombre() === 'success'
-        && this.getValidationStateValor === 'success') {
+    if (this.getValidationStatePais() === 'success' && this.getValidationStateNombre() === 'success') {
       this.props.addCiudad(this.state.nuevoPais, this.state.nuevoNombre, this.state.nuevoValor);
     }
     this.props.hideModal();
@@ -120,14 +120,13 @@ class ModalAddCiudad extends Component {
               validationState={this.getValidationStatePais()}
             >
               <ControlLabel>Pais</ControlLabel>
-              <FormControl componentClass="select" placeholder="Group"
-                 inputRef={ref => { this.groupSelect = ref; }}
+              <FormControl componentClass="select" placeholder="Pais"
                  onChange={(event) => this.handleChangePais(event.target.value)}>
                  <option></option>
                   {
-//                      this.state.groups.map(function (group) {
-//                        return <option key={this.props.config.nombre} value={this.props.pais.nombre}>{this.props.pais.nombre}</option>
-//                      })
+                      this.props.paises.map(function (each) {
+                        return <option key={each.id} value={each}>{each.nombre}</option>
+                      })
                   }
 
               {this.getValidationStatePais() === 'error' &&
@@ -146,9 +145,7 @@ class ModalAddCiudad extends Component {
                 placeholder="Valor"
                 onChange={(event) => this.handleChangeValor(event.target.value)}
               />
-              {this.getValidationStateNombre() === 'error' &&
-                <HelpBlock>El campo no puede estar vacío</HelpBlock>
-              }
+
               <FormControl.Feedback />
             </FormGroup>
 
@@ -165,8 +162,10 @@ class ModalAddCiudad extends Component {
 }
 
 export default connect(
-  null, //Null porque no necesitamos mapStateToProps, pero si mapDispatchToProps
-  (dispatch) => ({
+  (state) => ({
+    paises: fromState.getAllPaises(state),
+  }),
+(dispatch) => ({
     addCiudad: (id, pais, nombre, valor) => dispatch(addCiudad(id, pais, nombre, valor)),
   })
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { PageHeader } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { buscarCiudades } from '../../actions';
+import { buscarCiudades, buscarPaises } from '../../actions';
 import * as fromState from '../../reducers';
 import Tabla from '../Tabla';
 import BotonAddCiudad from './BotonAddCiudad';
@@ -58,17 +58,13 @@ class Ciudades extends Component {
     )
   }
 
-  onRowClick() {
-    this.setState(
-      {
-        ...this.state,
-        showModal: true,
-      }
-    );
+  onRowClick(id) {
+    alert(`En este punto, podrías lanzar un modal de modificación o borrado para la ciudad con id = ${id}`)
   }
 
   componentDidMount() {
     this.props.buscarCiudades();
+    this.props.buscarPaises();
   }
 
   render() {
@@ -77,12 +73,12 @@ class Ciudades extends Component {
         <PageHeader>
           Ciudades
         </PageHeader>
-        <BotonAddCiudad config={this.configuration}/>
+        <BotonAddCiudad config={this.configuration} data={this.props.paises}/>
         <div>
           {this.props.ciudades && this.props.ciudades.length
           ?
             <Tabla 
-              onClick={ () => this.handleOnClick() }
+              //onClick={ () => this.handleOnClick() }
               config={this.configuration} 
               data={this.props.ciudades}
               onRowClick={(countryId) => this.onRowClick(countryId)}
@@ -105,10 +101,12 @@ class Ciudades extends Component {
 
 export default connect(
   (state) => ({
+    paises: fromState.getAllPaises(state),
     ciudades: fromState.getAllCiudades(state),
     estoyCargando: fromState.isCiudadesLoading(state),
   }),
   (dispatch) => ({
     buscarCiudades: () => dispatch(buscarCiudades()),
+    buscarPaises: () => dispatch(buscarPaises()),
   })
 )(Ciudades)

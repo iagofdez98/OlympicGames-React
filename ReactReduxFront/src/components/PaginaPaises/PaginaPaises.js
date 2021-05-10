@@ -48,11 +48,11 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons'
         {
           nombre: "VALOR",
           valor: (item) => item.valor,
-        },
+        }/*,
         {
           nombre: "CIUDADES",
           valor: () =>  <FontAwesomeIcon icon={faGlobe}/>
-        }
+        }*/
       ]
 
       //this.onRowClick = this.onRowClick.bind(this);
@@ -104,7 +104,6 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons'
             {this.props.paises && this.props.paises.length
             ?
               <Tabla
-                onClick={(countryId) => this.onRowClick(countryId) }
                 config={this.configuration}
                 data={this.props.paises}
                 onRowClick={(countryId) => this.onRowClick(countryId)}

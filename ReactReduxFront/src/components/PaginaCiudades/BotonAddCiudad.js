@@ -44,7 +44,7 @@ class BotonAddCiudad extends Component {
     return (
       <div className="alineacion-derecha margin-bottom-1">
         <Button bsStyle="success" onClick={ () => this.handleOnClick() }>Añadir ciudad</Button>
-        <ModalAddCiudad isShowing={ this.state.showModal } config={this.props.config} hideModal={ () => this.handleHideModal() } />
+        <ModalAddCiudad isShowing={ this.state.showModal } config={this.props.config} hideModal={ () => this.handleHideModal() } data={this.props.paises}/>
       </div>
     );
   }

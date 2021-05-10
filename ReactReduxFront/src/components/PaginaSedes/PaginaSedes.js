@@ -57,7 +57,7 @@ import BotonAddLibro from './BotonAddSede';
     }
   
     onRowClick(id) {
-      alert(`En este punto, podrías lanzar un modal de modificación o borrado para el libro con id = ${id}`)
+      alert(`En este punto, podrías lanzar un modal de modificación o borrado para la sede con id = ${id}`)
     }
 
     componentDidMount() {

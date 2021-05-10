@@ -34,7 +34,7 @@ public class CiudadController {
     CiudadDto upsertCiudad(@RequestBody CiudadDto ciudadDto){
         return ciudadService.upsertCiudad(ciudadDto);
     }
-    
+
     @DeleteMapping("/{id}")
     void deleteCiudadById(@PathVariable Integer id){
         ciudadService.deleteCiudadById(id);
