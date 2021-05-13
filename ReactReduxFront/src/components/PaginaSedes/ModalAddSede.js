@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Modal, Button, FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
+import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { addSede } from '../../actions';
+import * as fromState from '../../reducers';
 
 /**
  * Aqui se trata de manera breve el comportamiento de los inputs en React. 
@@ -36,30 +37,6 @@ import { addSede } from '../../actions';
         nuevoDescripcion: "", 
       }
     }
-      
-    getValidationStateNombrePais() {
-        if (this.state.nuevoNombrePais.length > 0) return 'success';
-        else if (!this.state.isNuevoNombrePaisClean) return 'error';
-        return null;
-      } 
-
-    getValidationStateNombreCiudad() {
-        if (this.state.nuevoNombreCiudad.length > 0) return 'success';
-        else if (!this.state.isNuevoNombreCiudadClean) return 'error';
-        return null;
-      } 
-
-    getValidationStateValor() {
-        if (this.state.nuevoValor.length > 0) return 'success';
-        else if (!this.state.isNuevoValorClean) return 'error';
-        return null;
-      } 
-
-    getValidationStateDescripcion() {
-        if (this.state.nuevoDescripcion.length > 0) return 'success';
-        else if (!this.state.isNuevoDescripcionClean) return 'error';
-        return null;
-      } 
 
       handleChangeNombrePais(valor) {
         this.setState(
@@ -101,12 +78,17 @@ import { addSede } from '../../actions';
         );
       }
 
+      retrieveCountryById(id) {
+        return this.props.paises.find(e=> e.id == id);
+      }
+
+      retrieveCityById(id) {
+        return this.props.ciudades.find(e=> e.id == id);
+      }
+
       handleSubmit() {
-        if (this.getValidationStateNombrePais() === 'success' && this.getValidationStateNombreCiudad() === 'success' &&
-            this.getValidationStateValor() === 'success' && this.getValidationStateDescripcion() === 'success') {
-          this.props.addSede(this.state.nuevoNombrePais, this.state.nuevoNombreCiudad, 
+        this.props.addSede(this.retrieveCountryById(new Number(this.selectVal.value)), this.retrieveCityById(new Number(this.selectValCiudades.value)), 
                                 this.state.nuevoValor, this.state.nuevoDescripcion);
-        }
         this.props.hideModal();
       }
 
@@ -120,67 +102,58 @@ import { addSede } from '../../actions';
 
             <Modal.Body>
             <form>
-                <FormGroup
-                validationState={this.getValidationStateNombrePais()}
-                >
+                <FormGroup>
                 <ControlLabel>Nombre Pais</ControlLabel>
                 <FormControl
-                    type="text"
-                    value={this.state.nuevoNombrePais}
-                    placeholder="Nombre Pais"
-                    onChange={(event) => this.handleChangeNombrePais(event.target.value)}
-                />
-                {this.getValidationStateNombrePais() === 'error' &&
-                    <HelpBlock>El campo no puede estar vacío</HelpBlock>
-                }
+                    componentClass="select"
+                    inputRef={(input) => this.selectVal = input} 
+                    required>
+                      {
+                          this.props.paises.map(function (each) {
+                            return <option key={each.id} value={each.id}>{each.nombre}</option>
+                          })
+                      }
+                </FormControl>
                 <FormControl.Feedback />
                 </FormGroup>
                
-                <FormGroup
-                validationState={this.getValidationStateNombreCiudad()}
-                >
+                <FormGroup>
                 <ControlLabel>Nombre Ciudad</ControlLabel>
                 <FormControl
-                    type="text"
-                    value={this.state.nuevoNombreCiudad}
-                    placeholder="Nombre Ciudad"
-                    onChange={(event) => this.handleChangeNombreCiudad(event.target.value)}
-                />
-                {this.getValidationStateNombreCiudad() === 'error' &&
-                    <HelpBlock>El campo no puede estar vacío</HelpBlock>
-                }
+                    componentClass="select"
+                    inputRef={(input) => this.selectValCiudades = input} 
+                    required>
+                      {
+                          this.props.ciudades.map(function (each) {
+                            return <option key={each.id} value={each.id}>{each.nombre}</option>
+                          })
+                      }
+                </FormControl>
                 <FormControl.Feedback />
                 </FormGroup>
 
-                <FormGroup
-                validationState={this.getValidationStateValor()}
-                >
+                <FormGroup>
                 <ControlLabel>Valor</ControlLabel>
                 <FormControl
                     type="text"
                     value={this.state.nuevoValor}
                     placeholder="Valor"
                     onChange={(event) => this.handleChangeValor(event.target.value)}
+                    required
                 />
-                {this.getValidationStateValor() === 'error' &&
-                    <HelpBlock>El campo no puede estar vacío</HelpBlock>
-                }
                 <FormControl.Feedback />
                 </FormGroup>
 
-                <FormGroup
-                validationState={this.getValidationStateDescripcion()}
-                >
+                <FormGroup>
                 <ControlLabel>Descripcion</ControlLabel>
                 <FormControl
-                    type="text"
-                    value={this.state.nuevoDescripcion}
-                    placeholder="Descripcion"
-                    onChange={(event) => this.handleChangeDescripcion(event.target.value)}
-                />
-                {this.getValidationStateDescripcion() === 'error' &&
-                    <HelpBlock>El campo no puede estar vacío</HelpBlock>
-                }
+                    componentClass="select"
+                    inputRef={(input) => this.selectValCiudades = input} 
+                    required>
+                        <option value={"Verano"}>Verano</option>
+                        <option value={"Invierno"}>Invierno</option>
+                </FormControl>
+
                 <FormControl.Feedback />
                 </FormGroup>
             </form>
@@ -197,10 +170,11 @@ import { addSede } from '../../actions';
 }
 
 export default connect(
-    null, //Null porque no necesitamos mapStateToProps, pero si mapDispatchToProps
-    (dispatch) => ({
-      addSede: (idPais, nombrePais, idCiudad, nombreCiudad, valor, 
-        descripcion, veces) => dispatch(addSede(idPais, nombrePais, idCiudad,
-          nombreCiudad, valor, descripcion, veces)),
+  (state) => ({
+    paises: fromState.getAllPaises(state),
+    ciudades: fromState.getAllCiudades(state),
+  }),    
+  (dispatch) => ({
+      addSede: (nombrePais, nombreCiudad, valor, descripcion) => dispatch(addSede(nombrePais, nombreCiudad, valor, descripcion)),
         })  
   )(ModalAddSede)

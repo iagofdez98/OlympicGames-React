@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
+import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { addPais } from '../../actions';
 
@@ -35,24 +35,6 @@ import { addPais } from '../../actions';
       }
     }
       
-    getValidationStateNombre() {
-        if (this.state.nuevoNombre.length > 0) return 'success';
-        else if (!this.state.isNuevoNombreClean) return 'error';
-        return null;
-      } 
-
-    getValidationStateCodigo() {
-        if (this.state.nuevoCodigo.length > 0) return 'success';
-        else if (!this.state.isNuevoCodigoClean) return 'error';
-        return null;
-      } 
-
-    getValidationStateValor() {
-        if (this.state.nuevoValor.length > 0) return 'success';
-        else if (!this.state.isNuevoValorClean) return 'error';
-        return null;
-      } 
-
       handleChangeNombrePais(valor) {
         this.setState(
           {
@@ -84,11 +66,7 @@ import { addPais } from '../../actions';
       }
 
       handleSubmit() {
-        if (this.getValidationStateNombre() === 'success' && this.getValidationStateCodigo() === 'success' &&
-            this.getValidationStateValor() === 'success') {
-          this.props.addPais(this.state.nuevoNombre, this.state.nuevoCodigo, 
-                                this.state.nuevoValor);
-        }
+        this.props.addPais(this.state.nuevoNombre, this.state.nuevoCodigo, this.state.nuevoValor);
         this.props.hideModal();
       }
 
@@ -102,51 +80,39 @@ import { addPais } from '../../actions';
 
             <Modal.Body>
             <form>
-                <FormGroup
-                validationState={this.getValidationStateNombre()}
-                >
+                <FormGroup>
                 <ControlLabel>Nombre Pais</ControlLabel>
                 <FormControl
                     type="text"
                     value={this.state.nuevoNombre}
                     placeholder="Nombre Pais"
                     onChange={(event) => this.handleChangeNombrePais(event.target.value)}
+                    required
                 />
-                {this.getValidationStateNombre() === 'error' &&
-                    <HelpBlock>El campo no puede estar vacío</HelpBlock>
-                }
                 <FormControl.Feedback />
                 </FormGroup>
                
-                <FormGroup
-                validationState={this.getValidationStateCodigo()}
-                >
+                <FormGroup>
                 <ControlLabel>Codigo</ControlLabel>
                 <FormControl
                     type="text"
                     value={this.state.nuevoCodigo}
                     placeholder="Codigo"
                     onChange={(event) => this.handleChangeCodigo(event.target.value)}
+                    required
                 />
-                {this.getValidationStateCodigo() === 'error' &&
-                    <HelpBlock>El campo no puede estar vacío</HelpBlock>
-                }
                 <FormControl.Feedback />
                 </FormGroup>
 
-                <FormGroup
-                validationState={this.getValidationStateValor()}
-                >
+                <FormGroup>
                 <ControlLabel>Valor</ControlLabel>
                 <FormControl
                     type="text"
                     value={this.state.nuevoValor}
                     placeholder="Valor"
                     onChange={(event) => this.handleChangeValor(event.target.value)}
+                    required
                 />
-                {this.getValidationStateValor() === 'error' &&
-                    <HelpBlock>El campo no puede estar vacío</HelpBlock>
-                }
                 <FormControl.Feedback />
                 </FormGroup>
             </form>

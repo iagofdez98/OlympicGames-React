@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { PageHeader } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { buscarSedes } from '../../actions';
+import { buscarSedes, buscarPaises, buscarCiudades } from '../../actions';
 import * as fromState from '../../reducers';
 import Tabla from '../Tabla';
 import BotonAddLibro from './BotonAddSede';
@@ -62,6 +62,9 @@ import BotonAddLibro from './BotonAddSede';
 
     componentDidMount() {
       this.props.buscarSedes();
+      this.props.buscarPaises();
+      this.props.buscarCiudades();
+
     }
 
     render() {
@@ -70,7 +73,7 @@ import BotonAddLibro from './BotonAddSede';
           <PageHeader>
             Sedes
           </PageHeader>
-          <BotonAddLibro/>
+          <BotonAddLibro config={this.configuration} data={this.props.paises, this.props.ciudades}/>
           <div>
             {this.props.sedes && this.props.sedes.length > 0
             ?
@@ -92,10 +95,15 @@ import BotonAddLibro from './BotonAddSede';
   
   export default connect(
     (state) => ({
+      paises: fromState.getAllPaises(state),
       sedes: fromState.getAllSedes(state),
+      ciudades: fromState.getAllCiudades(state),
       estoyCargando: fromState.isSedesLoading(state),
     }),
     (dispatch) => ({
       buscarSedes: () => dispatch(buscarSedes()),
+      buscarPaises: () => dispatch(buscarPaises()),
+      buscarCiudades: () => dispatch(buscarCiudades()),
+
     })
   )(Sedes)

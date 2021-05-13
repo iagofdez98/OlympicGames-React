@@ -51,7 +51,7 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons'
         }/*,
         {
           nombre: "CIUDADES",
-          valor: () =>  <FontAwesomeIcon icon={faGlobe}/>
+          valor: () =>  <FontAwesomeIcon onClick=()=>action(item.id) icon={faGlobe}/>
         }*/
       ]
 

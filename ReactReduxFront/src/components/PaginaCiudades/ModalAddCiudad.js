@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
+import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { addCiudad } from '../../actions';
 import * as fromState from '../../reducers';
@@ -33,37 +33,9 @@ class ModalAddCiudad extends Component {
       nuevoNombre: "",
       nuevoValor: "",
     }
+
   }
 
-  getValidationStatePais() {
-    if (this.state.nuevoPais.length > 0) return 'success';
-    else if (!this.state.isNuevoPaisClean) return 'error';
-    return null;
-  } 
-  
-  
-  getValidationStateNombre() {
-    if (this.state.nuevoNombre.length > 0) return 'success';
-    else if (!this.state.isNuevoNombreClean) return 'error';
-    return null;
-  }
-
-  getValidationStateValor() {
-    if (this.state.nuevoValor.length > 0) return 'success';
-    else if (!this.state.isNuevoValorClean) return 'error';
-    return null;
-  }
-
-  handleChangePais(valor) {
-    this.setState(
-      {
-        ...this.state,
-        nuevoPais: valor,
-        isNuevoPaisClean: false,
-      }
-    );
-  }
-  
   handleChangeNombre(valor) {
     this.setState(
       {
@@ -84,10 +56,12 @@ class ModalAddCiudad extends Component {
     );
   }
 
+  retrieveCountryById(id) {
+    return this.props.paises.find(e=> e.id == id);
+  }
+
   handleSubmit() {
-    if (this.getValidationStatePais() === 'success' && this.getValidationStateNombre() === 'success') {
-      this.props.addCiudad(this.state.nuevoPais, this.state.nuevoNombre, this.state.nuevoValor);
-    }
+    this.props.addCiudad(this.retrieveCountryById(new Number(this.selectVal.value)), this.state.nuevoNombre, this.state.nuevoValor);
     this.props.hideModal();
   }
 
@@ -100,44 +74,33 @@ class ModalAddCiudad extends Component {
 
         <Modal.Body>
           <form>
-            <FormGroup
-              validationState={this.getValidationStateNombre()}
-            >
+            <FormGroup>
               <ControlLabel>Nombre Ciudad</ControlLabel>
               <FormControl
                 type="text"
                 value={this.state.nuevoNombre}
                 placeholder="Nombre"
                 onChange={(event) => this.handleChangeNombre(event.target.value)}
+                required
               />
-              {this.getValidationStateNombre() === 'error' &&
-                <HelpBlock>El campo no puede estar vacío</HelpBlock>
-              }
               <FormControl.Feedback />
             </FormGroup>
             
-            <FormGroup
-              validationState={this.getValidationStatePais()}
-            >
+            <FormGroup>
               <ControlLabel>Pais</ControlLabel>
-              <FormControl componentClass="select" placeholder="Pais"
-                 onChange={(event) => this.handleChangePais(event.target.value)}>
-                 <option></option>
+              <FormControl 
+                componentClass="select"
+                inputRef={(input) => this.selectVal = input} 
+                required>
                   {
                       this.props.paises.map(function (each) {
-                        return <option key={each.id} value={each}>{each.nombre}</option>
+                        return <option key={each.id} value={each.id}>{each.nombre}</option>
                       })
                   }
 
-              {this.getValidationStatePais() === 'error' &&
-                <HelpBlock>El campo no puede estar vacío</HelpBlock>
-              }
-
             </FormControl>
             </FormGroup>
-            <FormGroup
-              validationState={this.getValidationStateNombre()}
-            >
+            <FormGroup>
               <ControlLabel>Valor</ControlLabel>
               <FormControl
                 type="text"
@@ -166,7 +129,7 @@ export default connect(
     paises: fromState.getAllPaises(state),
   }),
 (dispatch) => ({
-    addCiudad: (id, pais, nombre, valor) => dispatch(addCiudad(id, pais, nombre, valor)),
+    addCiudad: (pais, nombre, valor) => dispatch(addCiudad(pais, nombre, valor)),
   })
 
 )(ModalAddCiudad);

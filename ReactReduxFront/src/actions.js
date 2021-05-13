@@ -55,9 +55,9 @@ export const buscarCiudades = () => ({
   promise: api.buscarCiudades(),
 })
 
-export const addCiudad = (id, pais, nombre, valor) => ({
+export const addCiudad = (pais, nombre, valor) => ({
   type: ADD_CIUDAD,
-  promise: api.addCiudad(id, pais, nombre, valor),
+  promise: api.addCiudad(pais, nombre, valor),
 })
 
 export const ciudadesPais = (id) => ({

@@ -65,18 +65,15 @@ const addLibro = (autor, titulo) => {
  * Requests encadenadas con axios
  * https://github.com/axios/axios/issues/708
  */
- const addSede = (idPais, nombrePais, idCiudad,
-  nombreCiudad, valor, descripcion, veces) => {
+ const addSede = (nombrePais,
+  nombreCiudad, valor, descripcion) => {
   return axios.post(
     `${baseRestUrl}/sedes`,
     {
-      idPais, 
       nombrePais, 
-      idCiudad,
       nombreCiudad, 
       valor, 
       descripcion, 
-      veces,
     }
   )
   .then(
@@ -127,11 +124,10 @@ const addPais = (nombre, codigo, valor) => {
 /*
 Crea nuevo pais.
 */
-const addCiudad = (id, pais, nombre, valor) => {
+const addCiudad = (pais, nombre, valor) => {
   return axios.post(
     `${baseRestUrl}/ciudades`,
     {
-      id, 
       pais, 
       nombre, 
       valor,
