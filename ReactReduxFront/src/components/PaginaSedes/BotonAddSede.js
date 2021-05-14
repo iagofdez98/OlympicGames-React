@@ -45,7 +45,7 @@ import ModalAddSede from './ModalAddSede';
       return (
         <div className="alineacion-derecha margin-bottom-1">
           <Button bsStyle="success" onClick={ () => this.handleOnClick() }>Añadir sede</Button>
-          <ModalAddSede isShowing={ this.state.showModal } hideModal={ () => this.handleHideModal() } />
+          <ModalAddSede isShowing={ this.state.showModal } config={this.props.config} hideModal={ () => this.handleHideModal() } data={this.props.sedes} />
         </div>
       );
     }

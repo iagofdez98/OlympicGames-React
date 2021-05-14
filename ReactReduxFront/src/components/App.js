@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import TopNavBar from './NavBar/TopNavBar';
 import { Route, Switch } from 'react-router-dom';
-import PaginaBienvenida from './PaginaBienvenida/PaginaBienvenida';
 import PaginaLibros from './PaginaLibros/PaginaLibros';
-import PaginaSedes from './PaginaSedes/PaginaSedes';
+import PaginaAgrupacion from './PaginaAgupacion/PaginaAgrupacion';
 import PaginaPaises from './PaginaPaises/PaginaPaises';
 import PaginaCiudades from './PaginaCiudades/PaginaCiudades';
+import PaginaSedes from './PaginaSedes/PaginaSedes';
 
 
 /**
@@ -22,7 +22,7 @@ class App extends Component {
         <TopNavBar />
         <div className="contenido">
           <Switch>
-          <Route path='/' exact component={PaginaBienvenida} />
+          <Route path='/' exact component={PaginaAgrupacion} />
           <Route path='/libros' component={PaginaLibros} />
           <Route path='/sedes' component={PaginaSedes} />
           <Route path='/paises' component={PaginaPaises} />

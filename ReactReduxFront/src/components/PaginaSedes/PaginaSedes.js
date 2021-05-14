@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { PageHeader } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { buscarSedes, buscarPaises, buscarCiudades } from '../../actions';
+import { buscarSedes, buscarCiudades } from '../../actions';
 import * as fromState from '../../reducers';
 import Tabla from '../Tabla';
-import BotonAddLibro from './BotonAddSede';
-
+import BotonAddSede from './BotonAddSede';
+import ModalShowCiudades from '../ModalShowCiudades'
 /**
- * Renderiza una página de libros.
+ * Renderiza una página de Sedes.
  * Sirve de demostración acerca del uso de Redux y los renderizados condicionales.
  * Renderizados condicionales (CheatSheet) https://www.robinwieruch.de/conditional-rendering-react/
  * 
@@ -24,47 +24,51 @@ import BotonAddLibro from './BotonAddSede';
     constructor(props) {
       super(props);
   
+      this.state = {
+        showModal: false,
+      }
+      
       this.configuration = [
         {
-          nombre: "ID PAIS",
-          valor: (item) => item.idPais,
+          nombre: "ID",
+          valor: (item) => item.idSede,
         },
         {
-          nombre: "NOMBRE PAIS",
-          valor: (item) => item.nombrePais,
+          nombre: "ANO",
+          valor: (item) => item.ano,
         },
         {
-          nombre: "ID CIUDAD",
-          valor: (item) => item.idCiudad,
+          nombre: "CIUDAD",
+          valor: (item) => item.sede.nombre,
         },
         {
-            nombre: "NOMBRE CIUDAD",
-            valor: (item) => item.nombreCiudad,
-          },
-        {
-          nombre: "VALOR",
-          valor: (item) => item.valor,
+          nombre: "PAIS",
+          valor: (item) => item.sede.pais.nombre,
         },
         {
-          nombre: "DESCRIPCION",
-          valor: (item) => item.descripcion,
-        },
-        {
-          nombre: "VECES",
-          valor: (item) => item.veces,
-        },
+            nombre: "TIPO",
+            valor: (item) => item.tipo.tipo,
+          }
       ]
     }
-  
-    onRowClick(id) {
-      alert(`En este punto, podrías lanzar un modal de modificación o borrado para la sede con id = ${id}`)
+    
+     handleHideModal() {
+      this.setState(
+        {
+          ...this.state,
+          showModal: false,
+        }
+      )
     }
 
-    componentDidMount() {
-      this.props.buscarSedes();
-      this.props.buscarPaises();
-      this.props.buscarCiudades();
+    onRowClick(id) {
+        alert(`En este punto, podrías lanzar un modal de modificación o borrado para el libro con id = ${id}`)
+}
 
+  
+    componentDidMount() {
+      this.props.buscarCiudades();
+      this.props.buscarSedes();
     }
 
     render() {
@@ -73,21 +77,26 @@ import BotonAddLibro from './BotonAddSede';
           <PageHeader>
             Sedes
           </PageHeader>
-          <BotonAddLibro config={this.configuration} data={this.props.paises, this.props.ciudades}/>
+          <BotonAddSede config={this.configuration} data={this.props.ciudades}/>
           <div>
-            {this.props.sedes && this.props.sedes.length > 0
+            {this.props.sedes && this.props.sedes.length
             ?
-              <Tabla 
-                config={this.configuration} 
+              <Tabla
+                config={this.configuration}
                 data={this.props.sedes}
-                onRowClick={this.onRowClick}
-                />
+                onRowClick={(countryId) => this.onRowClick(countryId)}
+              />
             :
               <div>
-                {this.props.estoyCargando ? "Cargando..." : "No hay sedes para mostrar"}
+                {this.props.estoyCargando ? "Cargando..." : "No hay Sedes para mostrar"}
               </div>
             }
           </div>
+          <ModalShowCiudades 
+            id={this.state.countryId}
+            isShowing={ this.state.showModal } 
+            hide={ () => this.handleHideModal() }
+          />
         </div>
       )
     }
@@ -95,15 +104,12 @@ import BotonAddLibro from './BotonAddSede';
   
   export default connect(
     (state) => ({
-      paises: fromState.getAllPaises(state),
       sedes: fromState.getAllSedes(state),
       ciudades: fromState.getAllCiudades(state),
       estoyCargando: fromState.isSedesLoading(state),
     }),
     (dispatch) => ({
       buscarSedes: () => dispatch(buscarSedes()),
-      buscarPaises: () => dispatch(buscarPaises()),
       buscarCiudades: () => dispatch(buscarCiudades()),
-
     })
   )(Sedes)

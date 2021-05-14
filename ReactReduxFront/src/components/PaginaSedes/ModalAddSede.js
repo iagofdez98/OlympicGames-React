@@ -26,69 +26,39 @@ import * as fromState from '../../reducers';
       super(props);
   
       this.state = {
-        isNuevoNombrePaisClean: true,
-        isNuevoNombreCiudadClean: true,
-        isNuevoValorClean: true,
-        isNuevoDescripcionClean: true,
+        isNuevoAnoClean: true,
 
-        nuevoNombrePais: "", 
-        nuevoNombreCiudad: "", 
-        nuevoValor: "", 
-        nuevoDescripcion: "", 
+        nuevoAno: "", 
       }
     }
 
-      handleChangeNombrePais(valor) {
+      handleChangeAno(valor) {
         this.setState(
           {
             ...this.state,
-            nuevoNombrePais: valor,
-            isNuevoNombrePaisClean: false,
+            nuevoAno: valor,
+            isNuevoAnoClean: false,
           }
         );
-      }
-
-      handleChangeNombreCiudad(valor) {
-        this.setState(
-          {
-            ...this.state,
-            nuevoNombreCiudad: valor,
-            isNuevoNombreCiudadClean: false,
-          }
-        );
-      }
-
-      handleChangeValor(valor) {
-        this.setState(
-          {
-            ...this.state,
-            nuevoValor: valor,
-            isNuevoValorClean: false,
-          }
-        );
-      }
-
-      handleChangeDescripcion(valor) {
-        this.setState(
-          {
-            ...this.state,
-            nuevoDescripcion: valor,
-            isNuevoDescripcionClean: false,
-          }
-        );
-      }
-
-      retrieveCountryById(id) {
-        return this.props.paises.find(e=> e.id == id);
       }
 
       retrieveCityById(id) {
         return this.props.ciudades.find(e=> e.id == id);
       }
 
+      retrieveDescriptionById(id) {
+        if (id == 2){
+            return ({"id": 2, "tipo": "Verano"}) ;
+        }else{
+            return ({"id": 1, "tipo": "Invierno"}) ;
+
+        }
+      }
+
       handleSubmit() {
-        this.props.addSede(this.retrieveCountryById(new Number(this.selectVal.value)), this.retrieveCityById(new Number(this.selectValCiudades.value)), 
-                                this.state.nuevoValor, this.state.nuevoDescripcion);
+        this.props.addSede(new Number(this.state.nuevoAno),
+                            this.retrieveCityById(this.selectValCiudades.value),
+                            this.retrieveDescriptionById(this.selectValTipo.value));
         this.props.hideModal();
       }
 
@@ -102,22 +72,20 @@ import * as fromState from '../../reducers';
 
             <Modal.Body>
             <form>
-                <FormGroup>
-                <ControlLabel>Nombre Pais</ControlLabel>
-                <FormControl
-                    componentClass="select"
-                    inputRef={(input) => this.selectVal = input} 
-                    required>
-                      {
-                          this.props.paises.map(function (each) {
-                            return <option key={each.id} value={each.id}>{each.nombre}</option>
-                          })
-                      }
-                </FormControl>
-                <FormControl.Feedback />
-                </FormGroup>
-               
-                <FormGroup>
+
+            <FormGroup>
+              <ControlLabel>Año</ControlLabel>
+              <FormControl
+                type="text"
+                value={this.state.nuevoNombre}
+                placeholder="Nombre"
+                onChange={(event) => this.handleChangeAno(event.target.value)}
+                required
+              />
+              <FormControl.Feedback />
+            </FormGroup>
+
+            <FormGroup>
                 <ControlLabel>Nombre Ciudad</ControlLabel>
                 <FormControl
                     componentClass="select"
@@ -133,25 +101,13 @@ import * as fromState from '../../reducers';
                 </FormGroup>
 
                 <FormGroup>
-                <ControlLabel>Valor</ControlLabel>
-                <FormControl
-                    type="text"
-                    value={this.state.nuevoValor}
-                    placeholder="Valor"
-                    onChange={(event) => this.handleChangeValor(event.target.value)}
-                    required
-                />
-                <FormControl.Feedback />
-                </FormGroup>
-
-                <FormGroup>
                 <ControlLabel>Descripcion</ControlLabel>
                 <FormControl
                     componentClass="select"
-                    inputRef={(input) => this.selectValCiudades = input} 
+                    inputRef={(input) => this.selectValTipo = input} 
                     required>
-                        <option value={"Verano"}>Verano</option>
-                        <option value={"Invierno"}>Invierno</option>
+                        <option value={2}>Verano</option>
+                        <option value={1}>Invierno</option>
                 </FormControl>
 
                 <FormControl.Feedback />
@@ -171,10 +127,9 @@ import * as fromState from '../../reducers';
 
 export default connect(
   (state) => ({
-    paises: fromState.getAllPaises(state),
     ciudades: fromState.getAllCiudades(state),
   }),    
   (dispatch) => ({
-      addSede: (nombrePais, nombreCiudad, valor, descripcion) => dispatch(addSede(nombrePais, nombreCiudad, valor, descripcion)),
+      addSede: (ano, sede, tipo) => dispatch(addSede(ano, sede, tipo)),
         })  
   )(ModalAddSede)

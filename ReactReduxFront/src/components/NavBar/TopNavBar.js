@@ -16,7 +16,7 @@ class TopNavBar extends Component {
   }
   
   handleOnClickSedes() {
-    this.props.history.push(`/sedes/agrupacion`)
+    this.props.history.push(`/sedes`)
   }
   
   handleOnClickPaises() {
@@ -26,6 +26,7 @@ class TopNavBar extends Component {
   handleOnClickCiudades() {
     this.props.history.push(`/ciudades`)
   } 
+
 
   render() {
     return (

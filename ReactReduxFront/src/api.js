@@ -52,34 +52,11 @@ const addLibro = (autor, titulo) => {
 /**
  * Devuelve todas los sedes en BD
  */
- const buscarSedes = () => {
+ const buscarAgrupacion = () => {
   return axios.get(
     `${baseRestUrl}/sedes/agrupacion`
   )
   .then(data => data.data)
-}
-
-/**
- * Crea un nuevo sede. Después, si tiene éxito, ejecuta la misma consulta que buscarSede 
- * para devolver de nuevo todos los Sedes en BD
- * Requests encadenadas con axios
- * https://github.com/axios/axios/issues/708
- */
- const addSede = (nombrePais,
-  nombreCiudad, valor, descripcion) => {
-  return axios.post(
-    `${baseRestUrl}/sedes`,
-    {
-      nombrePais, 
-      nombreCiudad, 
-      valor, 
-      descripcion, 
-    }
-  )
-  .then(
-    data => axios.get(
-      `${baseRestUrl}/sedes/agrupacion`
-    ).then(data => data.data))
 }
 
 /**
@@ -148,16 +125,42 @@ const ciudadesPais = (id) => {
   )
 }
 
+/**
+ * Devuelve todos los libros en BD
+ */
+ const buscarSedes = () => {
+  return axios.get(
+    `${baseRestUrl}/sedes`
+  )
+  .then(data => data.data)
+}
+
+const addSede = (ano, sede, tipo) => {
+  return axios.post(
+    `${baseRestUrl}/sedes`,
+    {
+      ano,
+      sede,
+      tipo,
+    }
+  )
+  .then(
+    data => axios.get(
+      `${baseRestUrl}/sedes`
+    ).then(data => data.data))
+}
+
 
 export default {
   buscarLibros,
   addLibro,
   buscarSedes,
-  addSede,
   buscarPaises,
   addPais,
   buscarCiudades,
   addCiudad,
   ciudadesPais,
+  buscarAgrupacion,
+  addSede,
 }
 

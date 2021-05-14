@@ -3,7 +3,7 @@ import libros from "./reducers/libros";
 import sedes from "./reducers/sedes";
 import paises from "./reducers/paises";
 import ciudades from "./reducers/ciudades";
-
+import agrupacion from "./reducers/agrupacion";
 
 /**
  * El export default de este archivo corresponde a un reducer general formado por cada
@@ -14,6 +14,7 @@ export default combineReducers({
   sedes,
   paises,
   ciudades,
+  agrupacion
 });
 
 /**
@@ -37,4 +38,7 @@ export const getAllCiudades = (state) => state.ciudades.todos;
 export const isCiudadesLoading = (state) => state.ciudades.cargando;
 
 export const ciudadesPais = (state) => state.ciudades.relacion;
+
+export const getAllAgrupacion = (state) => state.agrupacion.todos;
+
 
