@@ -8,6 +8,7 @@ import BotonAddPais from './BotonAddPais';
 import ModalShowCiudades from '../ModalShowCiudades'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGlobe } from '@fortawesome/free-solid-svg-icons'
+import ModalAddPais from './ModalAddPais'
 
 /**
  * Renderiza una página de paises.
@@ -28,7 +29,8 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons'
       super(props);
   
       this.state = {
-        showModal: false,
+        showModalCiudad: false,
+        showModalEdit: false,
         countryId: null,
       }
       
@@ -48,22 +50,29 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons'
         {
           nombre: "VALOR",
           valor: (item) => item.valor,
-        }/*,
+        },
         {
           nombre: "CIUDADES",
-          valor: () =>  <FontAwesomeIcon onClick=()=>action(item.id) icon={faGlobe}/>
-        }*/
+          valor: (item) =>  <FontAwesomeIcon onClick={()=>this.showCiudades(item.id)} icon={faGlobe}/>
+        }
       ]
-
-      //this.onRowClick = this.onRowClick.bind(this);
 
     }
 
+    showCiudades(countryId){ 
+      this.setState(
+        {
+          ...this.state,
+          showModalCiudades: true,
+          countryId
+        }
+      );
+    }
     /* handleOnClick() {
        this.setState(
          {
            ...this.state,
-           showModal: true,
+           showModalCiudades: true,
          }
        )
      *}
@@ -73,7 +82,8 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons'
       this.setState(
         {
           ...this.state,
-          showModal: false,
+          showModalCiudades: false,
+          showModalEdit: false,
         }
       )
     }
@@ -82,7 +92,7 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons'
       this.setState(
         {
           ...this.state,
-          showModal: true,
+          showModalEdit: true,
           countryId
         }
       );
@@ -116,9 +126,14 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons'
           </div>
           <ModalShowCiudades 
             id={this.state.countryId}
-            isShowing={ this.state.showModal } 
+            isShowing={ this.state.showModalCiudades } 
             hide={ () => this.handleHideModal() }
           />
+
+          
+          <ModalAddPais 
+            isShowing={ this.state.showModalEdit } 
+            hideModal={ () => this.handleHideModal() } /> 
         </div>
       )
     }

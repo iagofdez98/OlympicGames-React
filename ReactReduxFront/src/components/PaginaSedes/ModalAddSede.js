@@ -43,11 +43,11 @@ import * as fromState from '../../reducers';
       }
 
       retrieveCityById(id) {
-        return this.props.ciudades.find(e=> e.id == id);
+        return this.props.ciudades.find(e=> e.id === id);
       }
 
       retrieveDescriptionById(id) {
-        if (id == 2){
+        if (id === 2){
             return ({"id": 2, "tipo": "Verano"}) ;
         }else{
             return ({"id": 1, "tipo": "Invierno"}) ;

@@ -57,7 +57,7 @@ class ModalAddCiudad extends Component {
   }
 
   retrieveCountryById(id) {
-    return this.props.paises.find(e=> e.id == id);
+    return this.props.paises.find(e=> e.id === id);
   }
 
   handleSubmit() {
