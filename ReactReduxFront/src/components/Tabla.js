@@ -26,7 +26,7 @@ class Tabla extends Component {
           </thead>
           <tbody>
             {this.props.data.map((element, index) => (
-              <Fila index={index} config={this.props.config} data={element} onRowClick={this.props.onRowClick}/>
+              <Fila index={index} config={this.props.config} data={element}/>
             ))}
           </tbody>
         </Table>

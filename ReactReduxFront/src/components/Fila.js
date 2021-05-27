@@ -9,7 +9,7 @@ class Fila extends Component {
 
   render() {
     return (
-      <tr className="clickable" onClick={() => this.props.onRowClick(this.props.data.id) }>
+      <tr className="clickable">
         {this.props.config.map((each, index) => (
           <td key={this.props.index + "_" + index}>{each.valor(this.props.data)}</td>
           ))}

@@ -56,6 +56,10 @@ class ModalAddCiudad extends Component {
     );
   }
 
+  setDefaultNombre() {
+    return this.props.pais.nombre;
+  }
+
   retrieveCountryById(id) {
     return this.props.paises.find(e=> e.id === id);
   }

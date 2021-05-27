@@ -7,8 +7,8 @@ import Tabla from '../Tabla';
 import BotonAddPais from './BotonAddPais';
 import ModalShowCiudades from '../ModalShowCiudades'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGlobe } from '@fortawesome/free-solid-svg-icons'
-import ModalAddPais from './ModalAddPais'
+import { faGlobe, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
+import ModalPais from './ModalPais'
 
 /**
  * Renderiza una página de paises.
@@ -54,7 +54,15 @@ import ModalAddPais from './ModalAddPais'
         {
           nombre: "CIUDADES",
           valor: (item) =>  <FontAwesomeIcon onClick={()=>this.showCiudades(item.id)} icon={faGlobe}/>
-        }
+        },
+        {
+          nombre: "EDITAR",
+          valor: (item) =>  <FontAwesomeIcon onClick={()=>this.editPais(item.id)} icon={faEdit}/>
+        },
+        {
+          nombre: "BORRAR",
+          valor: (item) =>  <FontAwesomeIcon onClick={()=>this.deletePais(item.id)} icon={faTrash}/>
+        },
       ]
 
     }
@@ -68,15 +76,22 @@ import ModalAddPais from './ModalAddPais'
         }
       );
     }
-    /* handleOnClick() {
-       this.setState(
-         {
-           ...this.state,
-           showModalCiudades: true,
-         }
-       )
-     *}
-    */
+    
+    editPais(countryId){
+      this.setState({
+        ...this.state,
+        showModalEdit : true,
+        countryId
+      })
+    }
+
+    deletePais(countryId){
+      
+    }
+
+    findPais(id){
+      return this.props.paises.find(e=> e.id === id);
+    }
     
      handleHideModal() {
       this.setState(
@@ -87,17 +102,6 @@ import ModalAddPais from './ModalAddPais'
         }
       )
     }
-
-    onRowClick(countryId) {
-      this.setState(
-        {
-          ...this.state,
-          showModalEdit: true,
-          countryId
-        }
-      );
-    }
-
   
     componentDidMount() {
       this.props.buscarPaises();
@@ -116,7 +120,6 @@ import ModalAddPais from './ModalAddPais'
               <Tabla
                 config={this.configuration}
                 data={this.props.paises}
-                onRowClick={(countryId) => this.onRowClick(countryId)}
               />
             :
               <div>
@@ -130,8 +133,8 @@ import ModalAddPais from './ModalAddPais'
             hide={ () => this.handleHideModal() }
           />
 
-          
-          <ModalAddPais 
+          <ModalPais
+            pais={this.findPais(this.state.countryId)}
             isShowing={ this.state.showModalEdit } 
             hideModal={ () => this.handleHideModal() } /> 
         </div>
