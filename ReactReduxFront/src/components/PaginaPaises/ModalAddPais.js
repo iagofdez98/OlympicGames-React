@@ -61,6 +61,14 @@ import { addPais } from '../../actions';
       setDefaultNombre() {
         return this.props.pais ? this.props.pais.nombre : null;
       }
+
+      setDefaultCodigo() {
+        return this.props.pais ? this.props.pais.codigo : null;
+      }
+
+      setDefaultValor() {
+        return this.props.pais ? this.props.pais.valor : null;
+      }
   
       componentDidUpdate(prevProps) {
         if (this.props.id 
@@ -88,8 +96,7 @@ import { addPais } from '../../actions';
                 <FormControl
                     type="text"
                     placeholder="Pais"
-                    // value={this.state.nuevoNombre}
-                    defaultValue={this.props.pais ? this.props.pais.nombre : ""}
+                    defaultValue={this.setDefaultNombre()}
                     onChange={(event) => this.handleChangeNombrePais(event.target.value)}
                     required
                 />
@@ -100,7 +107,7 @@ import { addPais } from '../../actions';
                 <ControlLabel>Codigo</ControlLabel>
                 <FormControl
                     type="text"
-                    defaultValue={this.props.pais ? this.props.pais.codigo : ""}
+                    defaultValue={this.setDefaultCodigo()}
                     placeholder="Codigo"
                     onChange={(event) => this.handleChangeCodigo(event.target.value)}
                     required
@@ -112,7 +119,7 @@ import { addPais } from '../../actions';
                 <ControlLabel>Valor</ControlLabel>
                 <FormControl
                     type="text"
-                    defaultValue={this.props.pais ? this.props.pais.valor : ""}
+                    defaultValue={this.setDefaultValor()}
                     placeholder="Valor"
                     onChange={(event) => this.handleChangeValor(event.target.value)}
                     required

@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping(value = "/ciudades")
 public class CiudadController {
 
-    //get /ciudades Optional requestParameters  countryId
+    //get /ciudades Optional requestParameters countryId
     //get /ciudades/{id} => detalle
     //post /ciudades => crear y actualizar
     //delete /ciudades/{id} => borrar

@@ -7,13 +7,11 @@ import com.qindel.ReactReduxBack.entity.PaisEntity;
 import java.util.List;
 
 public interface IPaisService {
-    List<PaisDto> getPaises();
+    List<PaisDto> getPaisesList();
 
-    void saveDto(PaisDto paisDto);
+    PaisDto getPaisById(Integer id);
 
-    void saveEntity(PaisEntity paisEntity);
+    PaisDto upsertPais(PaisDto paisDto);
 
     void deletePaisById(Integer id);
-
-    void deletePaises();
 }
