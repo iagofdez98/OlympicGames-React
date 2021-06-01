@@ -87,6 +87,18 @@ const addPais = (nombre, codigo, valor) => {
     ).then(data => data.data))
 }
 
+/*
+Borra un pais.
+*/
+const deletePais = (id) => {
+  return axios.delete(
+    `${baseRestUrl}/paises/${id}`,
+  )
+  .then(
+    data => axios.get(
+      `${baseRestUrl}/paises`
+    ).then(data => data.data))
+}
 
 /**
  * Devuelve todas los ciudades en BD
@@ -157,6 +169,7 @@ export default {
   buscarSedes,
   buscarPaises,
   addPais,
+  deletePais,
   buscarCiudades,
   addCiudad,
   ciudadesPais,

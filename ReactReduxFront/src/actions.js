@@ -10,6 +10,7 @@ export const BUSCAR_AGRUPACION = "BUSCAR_AGRUPACION";
 
 export const BUSCAR_PAISES = "BUSCAR_PAISES";
 export const ADD_PAIS = "ADD_PAIS";
+export const DELETE_PAIS = "DELETE_PAIS";
 
 export const BUSCAR_CIUDADES = "BUSCAR_CIUDADES";
 export const ADD_CIUDAD = "ADD_CIUDAD";
@@ -43,6 +44,11 @@ export const buscarPaises = () => ({
 export const addPais = (nombre, codigo, valor) => ({
   type: ADD_PAIS,
   promise: api.addPais(nombre, codigo, valor),
+})
+
+export const deletePais = (id) => ({
+  type: DELETE_PAIS,
+  promise: api.deletePais(id),
 })
 
 export const buscarCiudades = () => ({

@@ -1,5 +1,5 @@
 import { successType, requestType } from '../utils';
-import { BUSCAR_PAISES, ADD_PAIS } from "../actions";
+import { BUSCAR_PAISES, ADD_PAIS, DELETE_PAIS } from "../actions";
 
 const initialState = {
   cargando: false,
@@ -32,6 +32,14 @@ export default function libros(state = initialState, { type, payload, data }) {
         }
       )
     case successType(ADD_PAIS):
+      return (
+        {
+          ...state,
+          todos: data,
+          cargando: false,
+        }
+      )
+    case successType(DELETE_PAIS):
       return (
         {
           ...state,

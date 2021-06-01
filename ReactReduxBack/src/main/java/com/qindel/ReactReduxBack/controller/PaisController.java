@@ -21,7 +21,7 @@ public class PaisController {
     }
 
     @GetMapping("{id}")
-    void getPaisById(@PathParam("id") Integer id){
+    void getPaisById(@PathVariable("id") Integer id){
         service.getPaisById(id);
     }
 
@@ -30,8 +30,8 @@ public class PaisController {
         service.upsertPais(paisDto);
     }
 
-    @DeleteMapping("/{id}")
-    void deletePaisById(Integer id){
+    @DeleteMapping("{id}")
+    void deletePaisById(@PathVariable("id") Integer id){
         service.deletePaisById(id);
     }
 }

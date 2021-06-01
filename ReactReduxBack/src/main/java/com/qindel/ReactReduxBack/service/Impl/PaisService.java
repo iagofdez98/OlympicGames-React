@@ -47,11 +47,7 @@ public class PaisService implements IPaisService {
 
     @Override
     public PaisDto upsertPais(PaisDto paisDto) {
-        PaisEntity paisEntity = null;
-
-        if(nonNull(paisRepository.findById(paisDto.getId()))){
-            paisEntity = paisRepository.save(paisMapper.toPaisEntity(paisDto));
-        }
+        PaisEntity paisEntity = paisRepository.save(paisMapper.toPaisEntity(paisDto));
 
         return paisMapper.toPaisDto(paisEntity);
     }

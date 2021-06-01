@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { PageHeader } from 'react-bootstrap';
+import { ModalBody, ModalHeader, PageHeader, Modal, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { buscarPaises } from '../../actions';
+import { buscarPaises, deletePais } from '../../actions';
 import * as fromState from '../../reducers';
 import Tabla from '../Tabla';
 import BotonAddPais from './BotonAddPais';
@@ -31,6 +31,7 @@ import ModalPais from './ModalPais'
       this.state = {
         showModalCiudad: false,
         showModalEdit: false,
+        showDelete: false,
         countryId: null,
       }
       
@@ -86,8 +87,16 @@ import ModalPais from './ModalPais'
     }
 
     deletePais(countryId){
-      
+      this.setState({
+        ...this.state,
+        showDelete : true,
+        countryId
+      })
     }
+
+    // deletePais(countryId){
+    //   this.props.deletePais(countryId);
+    // }
 
     findPais(id){
       return this.props.paises.find(e=> e.id === id);
@@ -99,8 +108,14 @@ import ModalPais from './ModalPais'
           ...this.state,
           showModalCiudades: false,
           showModalEdit: false,
+          showDelete: false,
         }
       )
+    }
+
+    hideAndDelete(countryId){
+      this.props.deletePais(countryId);
+      this.handleHideModal();
     }
   
     componentDidMount() {
@@ -137,6 +152,19 @@ import ModalPais from './ModalPais'
             pais={this.findPais(this.state.countryId)}
             isShowing={ this.state.showModalEdit } 
             hideModal={ () => this.handleHideModal() } /> 
+
+          <Modal show={this.state.showDelete} onHide={() => this.handleHideModal()}>
+            <Modal.Header closeButton>
+            <Modal.Title>Borrando país</Modal.Title>
+            </Modal.Header>            
+            
+            <Modal.Body>Se borrará el país con id: {this.state.countryId} </Modal.Body>
+
+            <Modal.Footer>
+                <Button onClick={() => this.props.hideModal()}>Cancelar</Button>
+                <Button bsStyle="danger" onClick={() => this.hideAndDelete(this.state.countryId)}>Borrar</Button>
+            </Modal.Footer>
+        </Modal>
         </div>
       )
     }
@@ -149,5 +177,6 @@ import ModalPais from './ModalPais'
     }),
     (dispatch) => ({
       buscarPaises: () => dispatch(buscarPaises()),
+      deletePais: (id) => dispatch(deletePais(id)),
     })
   )(Paises)

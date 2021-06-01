@@ -11,6 +11,7 @@ import com.qindel.ReactReduxBack.vo.IOlympicGames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,33 +26,32 @@ public class SedeOlympicService implements ISedeOlympicService {
     @Autowired
     private SedeOlympicMapper sedeOlympicMapper;
 
-    public List<SedeOlympicDto> getSedes(){
-        return sedeOlympicRepository.findAll()
-                .stream().map(sedeOlympicMapper::toSedeOlympicDto)
+    public List<SedeOlympicDto> getSedesList(){
+        List<SedeOlympicEntity> sedeOlympicEntityList = this.sedeOlympicRepository.findAll();
+
+        return sedeOlympicEntityList
+                .stream()
+                .map(sedeOlympicMapper::toSedeOlympicDto)
                 .collect(Collectors.toList());
     }
 
-    public List<IOlympicGames> getJuegos(){
+    public List<IOlympicGames> getOlympicGamesList(){
         return sedeOlympicRepository.findByQueryVeces();
     }
 
-    public void addSedeOlympic(SedeOlympicDto s){
+    public void upsertSedeOlympic(SedeOlympicDto s){
         sedeOlympicRepository.save(sedeOlympicMapper.toSedeOlympicEntity(s));
     }
 
-    public void saveEntity(SedeOlympicEntity s){
-        sedeOlympicRepository.save(s);
-    }
-
     public void deleteSedeOlympicById(CiudadDto ciudad, Integer ano){
-    SedeOlympicID sedeID = new SedeOlympicID();
-    sedeID.setSede(ciudad.getId());
-    sedeID.setAno(ano);
-    sedeOlympicRepository.deleteById(sedeID);
-    }
+        SedeOlympicID sedeID = new SedeOlympicID();
+        sedeID.setSede(ciudad.getId());
+        sedeID.setAno(ano);
 
-    public void deleteSedes() {
-        sedeOlympicRepository.deleteAll();
+        SedeOlympicEntity sedeOlympicEntity = sedeOlympicRepository.findById(sedeID)
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        sedeOlympicRepository.delete(sedeOlympicEntity);
     }
 
 }
