@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { PageHeader } from 'react-bootstrap';
+import { PageHeader,  Modal, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { buscarSedes, buscarCiudades } from '../../actions';
+import {buscarSedes, buscarCiudades, deleteSede } from '../../actions';
 import * as fromState from '../../reducers';
 import Tabla from '../Tabla';
 import BotonAddSede from './BotonAddSede';
-import ModalShowCiudades from '../ModalShowCiudades'
+import ModalSede from './ModalSede';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
+
 /**
  * Renderiza una página de Sedes.
  * Sirve de demostración acerca del uso de Redux y los renderizados condicionales.
@@ -26,6 +29,10 @@ import ModalShowCiudades from '../ModalShowCiudades'
   
       this.state = {
         showModal: false,
+        showModalEdit: false,
+        showModalDelete: false,
+        sedeId: null,
+        ano: null,
       }
       
       this.configuration = [
@@ -48,8 +55,41 @@ import ModalShowCiudades from '../ModalShowCiudades'
         {
             nombre: "TIPO",
             valor: (item) => item.tipo.tipo,
-          }
+        },
+        {
+          nombre: "EDITAR",
+          valor: (item) =>  <FontAwesomeIcon onClick={()=>this.editSede(item.idSede)} icon={faEdit}/>
+        },
+        {
+          nombre: "BORRAR",
+          valor: (item) =>  <FontAwesomeIcon onClick={()=>this.deleteSede(item.idSede, item.ano)} icon={faTrash}/>
+        },
       ]
+    }
+
+    editSede(sedeId){
+      this.setState(
+        {
+          ...this.state,
+          showModalEdit: true,
+          sedeId
+        }
+      )
+    }
+
+    deleteSede(sedeId, ano){
+      this.setState(
+        {
+          ...this.state,
+          showModalDelete: true,
+          sedeId,
+          ano
+        }
+      )
+    }
+
+    findSede(id){
+      return this.props.sedes.find(e=> e.id === id);
     }
     
      handleHideModal() {
@@ -57,13 +97,16 @@ import ModalShowCiudades from '../ModalShowCiudades'
         {
           ...this.state,
           showModal: false,
+          showModalEdit: false,
+          showModalDelete: false,
         }
       )
     }
 
-    onRowClick(id) {
-        alert(`En este punto, podrías lanzar un modal de modificación o borrado para el libro con id = ${id}`)
-}
+    hideAndDelete(sedeId, ano){
+      this.props.deleteSede(sedeId, ano);
+      this.handleHideModal();
+    }
 
   
     componentDidMount() {
@@ -92,11 +135,24 @@ import ModalShowCiudades from '../ModalShowCiudades'
               </div>
             }
           </div>
-          <ModalShowCiudades 
-            id={this.state.countryId}
-            isShowing={ this.state.showModal } 
-            hide={ () => this.handleHideModal() }
-          />
+
+          <ModalSede
+            sede={this.findSede(this.state.sedeId)}
+            isShowing={ this.state.showModalEdit } 
+            hideModal={ () => this.handleHideModal() } /> 
+
+          <Modal show={this.state.showModalDelete} onHide={() => this.handleHideModal()}>
+            <Modal.Header closeButton>
+            <Modal.Title>Borrando sede</Modal.Title>
+            </Modal.Header>            
+            
+            <Modal.Body>Se borrará la sede con id: {this.state.sedeId} </Modal.Body>
+
+            <Modal.Footer>
+                <Button onClick={() => this.props.handleHideModal()}>Cancelar</Button>
+                <Button bsStyle="danger" onClick={() => this.hideAndDelete(this.state.sedeId, this.state.ano)}>Borrar</Button>
+            </Modal.Footer>
+          </Modal>
 
         </div>
       )
@@ -112,5 +168,6 @@ import ModalShowCiudades from '../ModalShowCiudades'
     (dispatch) => ({
       buscarSedes: () => dispatch(buscarSedes()),
       buscarCiudades: () => dispatch(buscarCiudades()),
+      deleteSede: (id, ano) => dispatch(deleteSede(id, ano)),
     })
   )(Sedes)

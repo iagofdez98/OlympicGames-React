@@ -9,6 +9,6 @@ import java.util.List;
 public interface ISedeOlympicService {
     List<SedeOlympicDto> getSedesList();
     void upsertSedeOlympic(SedeOlympicDto sedeOlympicDto);
-    void deleteSedeOlympicById(CiudadDto ano, Integer id);
+    void deleteSedeOlympicById(Integer id, Integer ano);
     List<IOlympicGames> getOlympicGamesList();
 }

@@ -32,8 +32,8 @@ public class SedeOlympicController {
         service.upsertSedeOlympic(ol);
     }
 
-    @DeleteMapping("/{id}")
-    void deleteSedeOlympic(CiudadDto ciudad, Integer ano){
-        service.deleteSedeOlympicById(ciudad, ano);
+    @DeleteMapping("{id}/{ano}")
+    void deleteSedeOlympic(@PathVariable("id") Integer id, @PathVariable("ano") Integer ano){
+        service.deleteSedeOlympicById(id, ano);
     }
 }

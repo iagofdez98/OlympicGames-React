@@ -58,6 +58,10 @@ import { addPais } from '../../actions';
         );
       }
 
+      setDefaultId() {
+        return this.props.pais ? this.props.pais.id : null;
+      }
+
       setDefaultNombre() {
         return this.props.pais ? this.props.pais.nombre : null;
       }
@@ -77,8 +81,23 @@ import { addPais } from '../../actions';
         }
       }
 
+      resetStates(){
+        this.setState(
+          {
+            ...this.state,
+            nuevoValor: null,
+            nuevoCodigo: null,
+            nuevoNombre: null
+          }
+        );
+      }
+
       handleSubmit() {
-        this.props.addPais(this.state.nuevoNombre, this.state.nuevoCodigo, this.state.nuevoValor);
+        this.props.addPais(this.setDefaultId() ,
+              this.state.nuevoNombre ? this.state.nuevoNombre : this.setDefaultNombre(), 
+              this.state.nuevoCodigo ? this.state.nuevoCodigo : this.setDefaultCodigo(), 
+              (this.state.nuevoValor !== 0 && this.state.nuevoValor !== null) ? this.state.nuevoValor : this.setDefaultValor());
+        this.resetStates();
         this.props.hideModal();
       }
     
@@ -142,8 +161,8 @@ import { addPais } from '../../actions';
 export default connect(
     null, //Null porque no necesitamos mapStateToProps, pero si mapDispatchToProps
     (dispatch) => ({
-      addPais: (nombre, codigo, valor) => 
-      dispatch(addPais(nombre, codigo, valor)),
+      addPais: (id, nombre, codigo, valor) => 
+      dispatch(addPais(id, nombre, codigo, valor)),
     })
   
   )(ModalAddPais);

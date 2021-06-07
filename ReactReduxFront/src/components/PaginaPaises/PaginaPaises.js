@@ -161,10 +161,10 @@ import ModalPais from './ModalPais'
             <Modal.Body>Se borrará el país con id: {this.state.countryId} </Modal.Body>
 
             <Modal.Footer>
-                <Button onClick={() => this.props.hideModal()}>Cancelar</Button>
+                <Button onClick={() => this.handleHideModal()}>Cancelar</Button>
                 <Button bsStyle="danger" onClick={() => this.hideAndDelete(this.state.countryId)}>Borrar</Button>
             </Modal.Footer>
-        </Modal>
+          </Modal>
         </div>
       )
     }

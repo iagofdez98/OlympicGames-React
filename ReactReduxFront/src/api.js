@@ -69,13 +69,28 @@ const addLibro = (autor, titulo) => {
   .then(data => data.data)
 }
 
+
+/*
+Borra un sede.
+*/
+const deleteSede = (id, ano) => {
+  return axios.delete(
+    `${baseRestUrl}/sedes/${id}/${ano}`,
+  )
+  .then(
+    data => axios.get(
+      `${baseRestUrl}/sedes`
+    ).then(data => data.data))
+}
+
 /*
 Crea nuevo pais.
 */
-const addPais = (nombre, codigo, valor) => {
+const addPais = (id, nombre, codigo, valor) => {
   return axios.post(
     `${baseRestUrl}/paises`,
     {
+      id,
       nombre, 
       codigo, 
       valor,
@@ -121,6 +136,20 @@ const addCiudad = (pais, nombre, valor) => {
       nombre, 
       valor,
     }
+  )
+  .then(
+    data => axios.get(
+      `${baseRestUrl}/ciudades`
+    ).then(data => data.data))
+}
+
+
+/*
+Borra un ciudad.
+*/
+const deleteCiudad = (id) => {
+  return axios.delete(
+    `${baseRestUrl}/ciudades/${id}`,
   )
   .then(
     data => axios.get(
@@ -175,5 +204,7 @@ export default {
   ciudadesPais,
   buscarAgrupacion,
   addSede,
+  deleteSede,
+  deleteCiudad
 }
 

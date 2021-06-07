@@ -14,9 +14,11 @@ export const DELETE_PAIS = "DELETE_PAIS";
 
 export const BUSCAR_CIUDADES = "BUSCAR_CIUDADES";
 export const ADD_CIUDAD = "ADD_CIUDAD";
+export const DELETE_CIUDAD = "DELETE_CIUDAD";
 
 export const BUSCAR_SEDES = "BUSCAR_SEDES";
 export const ADD_SEDE = "ADD_SEDE";
+export const DELETE_SEDE = "DELETE_SEDE";
 
 export const CIUDADES_PAIS = 'CIUDADES_PAIS';
 
@@ -41,9 +43,9 @@ export const buscarPaises = () => ({
   promise: api.buscarPaises(),
 })
 
-export const addPais = (nombre, codigo, valor) => ({
+export const addPais = (id, nombre, codigo, valor) => ({
   type: ADD_PAIS,
-  promise: api.addPais(nombre, codigo, valor),
+  promise: api.addPais(id, nombre, codigo, valor),
 })
 
 export const deletePais = (id) => ({
@@ -61,6 +63,12 @@ export const addCiudad = (pais, nombre, valor) => ({
   promise: api.addCiudad(pais, nombre, valor),
 })
 
+export const deleteCiudad = (id) => ({
+  type: DELETE_CIUDAD,
+  promise: api.deleteCiudad(id),
+})
+
+
 export const ciudadesPais = (id) => ({
   type: CIUDADES_PAIS,
   promise: api.ciudadesPais(id)
@@ -74,4 +82,9 @@ export const buscarSedes = () => ({
 export const addSede = (ano, sede, tipo) => ({
 type: ADD_SEDE,
 promise: api.addSede(ano, sede, tipo),
+})
+
+export const deleteSede = (id, ano) => ({
+  type: DELETE_SEDE,
+  promise: api.deleteSede(id, ano),
 })

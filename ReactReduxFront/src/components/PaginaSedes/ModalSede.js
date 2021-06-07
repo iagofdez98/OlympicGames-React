@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import ModalAddPais from './ModalAddPais';
+import ModalAddSede from './ModalAddSede';
 import { connect } from 'react-redux';
 
-class ModalPais extends Component {
+class ModalSede extends Component {
     constructor(props) {
         super(props);
 
@@ -13,10 +13,10 @@ class ModalPais extends Component {
 
     render() {
         return(
-          <ModalAddPais 
+          <ModalAddSede 
               isShowing={ this.props.isShowing } 
               hideModal={ this.props.hideModal }
-              pais={this.props.pais} 
+              sede={this.props.sede} 
           />
         )
     }
@@ -24,4 +24,4 @@ class ModalPais extends Component {
 export default connect(
     null, //Null porque no necesitamos mapStateToProps, pero si mapDispatchToProps
     null
-)(ModalPais);
+)(ModalSede);

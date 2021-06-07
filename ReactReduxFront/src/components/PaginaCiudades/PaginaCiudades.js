@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { PageHeader } from 'react-bootstrap';
+import { PageHeader, Modal, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { buscarCiudades, buscarPaises } from '../../actions';
+import { buscarCiudades, buscarPaises, deleteCiudad } from '../../actions';
 import * as fromState from '../../reducers';
 import Tabla from '../Tabla';
 import BotonAddCiudad from './BotonAddCiudad';
 import ModalShowCiudades from '../ModalShowCiudades'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 /**
  * Renderiza una página de ciudades.
@@ -27,6 +29,7 @@ class Ciudades extends Component {
     this.state = {
       showModal: false,
       countryId: null,
+      ciudadId: null,
     }
 
     this.configuration = [
@@ -46,7 +49,35 @@ class Ciudades extends Component {
         nombre: "VALOR",
         valor: (item) => item.valor,
       },
+      {
+        nombre: "EDITAR",
+        valor: (item) =>  <FontAwesomeIcon onClick={()=>this.editCiudad(item.id)} icon={faEdit}/>
+      },
+      {
+        nombre: "BORRAR",
+        valor: (item) =>  <FontAwesomeIcon onClick={()=>this.deleteCiudad(item.id)} icon={faTrash}/>
+      },
     ]
+  }
+
+  editCiudad(ciudadId){
+    this.setState(
+      {
+        ...this.state,
+        showModalEdit: true,
+        ciudadId
+      }
+    )
+  }
+
+  deleteCiudad(ciudadId){
+    this.setState(
+      {
+        ...this.state,
+        showModalDelete: true,
+        ciudadId,
+      }
+    )
   }
 
   handleHideModal() {
@@ -54,13 +85,17 @@ class Ciudades extends Component {
       {
         ...this.state,
         showModal: false,
+        showModalEdit: false,
+        showModalDelete: false,
       }
     )
   }
 
-  onRowClick(id) {
-    alert(`En este punto, podrías lanzar un modal de modificación o borrado para la ciudad con id = ${id}`)
+  hideAndDelete(ciudadId){
+    this.props.deleteCiudad(ciudadId);
+    this.handleHideModal();
   }
+
 
   componentDidMount() {
     this.props.buscarCiudades();
@@ -81,7 +116,6 @@ class Ciudades extends Component {
               //onClick={ () => this.handleOnClick() }
               config={this.configuration} 
               data={this.props.ciudades}
-              onRowClick={(countryId) => this.onRowClick(countryId)}
               />
           :
             <div>
@@ -94,6 +128,19 @@ class Ciudades extends Component {
             isShowing={ this.state.showModal } 
             hide={ () => this.handleHideModal() }
           />
+
+        <Modal show={this.state.showModalDelete} onHide={() => this.handleHideModal()}>
+            <Modal.Header closeButton>
+            <Modal.Title>Borrando ciudad</Modal.Title>
+            </Modal.Header>            
+            
+            <Modal.Body>Se borrará la ciudad con id: {this.state.ciudadId} </Modal.Body>
+
+            <Modal.Footer>
+                <Button onClick={() => this.props.handleHideModal()}>Cancelar</Button>
+                <Button bsStyle="danger" onClick={() => this.hideAndDelete(this.state.ciudadId)}>Borrar</Button>
+            </Modal.Footer>
+          </Modal>
       </div>
     )
   }
@@ -108,5 +155,6 @@ export default connect(
   (dispatch) => ({
     buscarCiudades: () => dispatch(buscarCiudades()),
     buscarPaises: () => dispatch(buscarPaises()),
+    deleteCiudad: (id) => dispatch(deleteCiudad(id)),
   })
 )(Ciudades)

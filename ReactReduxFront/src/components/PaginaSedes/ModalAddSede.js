@@ -65,7 +65,7 @@ import * as fromState from '../../reducers';
     
     render() {
         return (
-        <Modal show={this.props.isShowing} onHide={() => this.props.hideModal()}>
+          <Modal show={this.props.isShowing} onHide={() => this.props.hideModal()}>
             <Modal.Header closeButton>
             <Modal.Title>Añadiendo una nueva sede</Modal.Title>
             </Modal.Header>

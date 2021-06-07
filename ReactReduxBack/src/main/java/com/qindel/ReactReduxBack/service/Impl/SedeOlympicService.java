@@ -43,9 +43,9 @@ public class SedeOlympicService implements ISedeOlympicService {
         sedeOlympicRepository.save(sedeOlympicMapper.toSedeOlympicEntity(s));
     }
 
-    public void deleteSedeOlympicById(CiudadDto ciudad, Integer ano){
+    public void deleteSedeOlympicById(Integer id, Integer ano){
         SedeOlympicID sedeID = new SedeOlympicID();
-        sedeID.setSede(ciudad.getId());
+        sedeID.setSede(id);
         sedeID.setAno(ano);
 
         SedeOlympicEntity sedeOlympicEntity = sedeOlympicRepository.findById(sedeID)
